@@ -10,7 +10,7 @@ const createPrismaClient = () =>
   new PrismaClient({
     log:
       env.NODE_ENV === "development" ? ["query", "error", "warn"] : ["error"],
-    adapter: new PrismaPlanetScale(psClient),
+    adapter: new PrismaPlanetScale(psClient) as PrismaPlanetScale,
   });
 
 const globalForPrisma = globalThis as unknown as {
