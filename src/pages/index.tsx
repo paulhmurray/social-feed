@@ -20,8 +20,22 @@ const CreatePostWizard = () => {
   );
 };
 
-type PostWithUser = RouterOutputs["post"]["getAll"];
-const PostView = () => {};
+type PostWithUser = RouterOutputs["post"]["getAll"][number];
+
+const PostView = (props: PostWithUser) => {
+  const { post, author } = props;
+  return (
+    <div key={post.id} className="flex gap-3 border-b border-slate-400 p-8">
+      <img src={author.profilePicture} className="h-14 w-14 rounded-full" />
+      <div className="flex flex-col">
+        <div className="flex text-slate-400">
+          <span>{`@${author.username}`}</span>
+        </div>
+        <span>{post.content}</span>
+      </div>
+    </div>
+  );
+};
 
 export default function Home() {
   const user = useUser();
@@ -48,13 +62,8 @@ export default function Home() {
             {user.isSignedIn && <CreatePostWizard />}
           </div>
           <div className="flex flex-col">
-            {[...data]?.map(({ post, author }) => (
-              <div
-                key={post.id}
-                className="border-b border-slate-400 p-8 outline-none"
-              >
-                {post.content}
-              </div>
+            {[...data]?.map((fullPost) => (
+              <PostView {...fullPost} key={fullPost.post.id} />
             ))}
           </div>
         </div>
