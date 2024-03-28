@@ -1,7 +1,7 @@
 import { SignInButton, useUser } from "@clerk/nextjs";
 import Head from "next/head";
 
-import { api } from "~/utils/api";
+import { RouterOutputs, api } from "~/utils/api";
 
 const CreatePostWizard = () => {
   const { user } = useUser();
@@ -19,6 +19,9 @@ const CreatePostWizard = () => {
     </div>
   );
 };
+
+type PostWithUser = RouterOutputs["post"]["getAll"];
+const PostView = () => {};
 
 export default function Home() {
   const user = useUser();
@@ -45,7 +48,7 @@ export default function Home() {
             {user.isSignedIn && <CreatePostWizard />}
           </div>
           <div className="flex flex-col">
-            {[...data]?.map((post) => (
+            {[...data]?.map(({ post, author }) => (
               <div
                 key={post.id}
                 className="border-b border-slate-400 p-8 outline-none"
